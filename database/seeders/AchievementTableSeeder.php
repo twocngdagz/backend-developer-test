@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Achievement;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AchievementTableSeeder extends Seeder
 {
@@ -13,7 +14,9 @@ class AchievementTableSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
         DB::table('achievements')->truncate();
+        Schema::enableForeignKeyConstraints();
         $achievements =
             [
                 [

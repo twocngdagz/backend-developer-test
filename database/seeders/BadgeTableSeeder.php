@@ -7,6 +7,7 @@ use App\Models\Badge;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class BadgeTableSeeder extends Seeder
 {
@@ -15,7 +16,9 @@ class BadgeTableSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
         DB::table('badges')->truncate();
+        Schema::enableForeignKeyConstraints();
         $badges =
             [
                 [
