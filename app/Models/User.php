@@ -108,7 +108,7 @@ class User extends Authenticatable
 
         // Find the first achievement that the user hasn't unlocked
         $nextAchievement = Achievement::all()->first(function ($achievement) use ($unlockedAchievements) {
-            return !in_array($achievement->name, $unlockedAchievements);
+            return ! in_array($achievement->name, $unlockedAchievements);
         });
 
         return $nextAchievement;
