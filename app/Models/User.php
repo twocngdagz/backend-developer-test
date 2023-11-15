@@ -65,18 +65,44 @@ class User extends Authenticatable
     /**
      * The lessons that a user has watched.
      */
-    public function watched()
+    public function watched(): BelongsToMany
     {
         return $this->belongsToMany(Lesson::class)->wherePivot('watched', true);
     }
 
-    public function achievements()
+    public function achievements(): BelongsToMany
     {
         return $this->belongsToMany(Achievement::class)->withTimestamps();
     }
 
-    public function badges()
+    public function badges(): BelongsToMany
     {
         return $this->belongsToMany(Badge::class)->withTimestamps();
+    }
+
+    public function unlockAchievement($achievementName): bool
+    {
+        // Check if the user has already unlocked this achievement
+        if (! $this->hasAchievement($achievementName)) {
+
+            // If not, unlock the achievement for the user
+            $achievement = Achievement::where('name', $achievementName)->first();
+
+            $this->achievements()->attach($achievement->id);
+
+            return true; // Indicate that the achievement was unlocked
+        }
+
+        return false; // Indicate that the achievement was not unlocked (already unlocked)
+    }
+
+    public function hasAchievement($achievementName): bool
+    {
+        return $this->achievements->contains('name', $achievementName);
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 }
