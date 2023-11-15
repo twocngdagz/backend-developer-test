@@ -101,6 +101,19 @@ class User extends Authenticatable
         return $this->achievements->contains('name', $achievementName);
     }
 
+    public function getNextAchievement()
+    {
+        // Get unlocked achievements for the user
+        $unlockedAchievements = $this->achievements->pluck('name')->toArray();
+
+        // Find the first achievement that the user hasn't unlocked
+        $nextAchievement = Achievement::all()->first(function ($achievement) use ($unlockedAchievements) {
+            return !in_array($achievement->name, $unlockedAchievements);
+        });
+
+        return $nextAchievement;
+    }
+
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
