@@ -19,7 +19,7 @@ class UserTest extends TestCase
         $this->assertTrue($user->refresh()->hasAchievement('First Lesson Watched'));
     }
 
-    public function testGetNextAchievement()
+    public function testGetNextAchievements()
     {
         $user = User::factory()->create();
 
@@ -28,9 +28,20 @@ class UserTest extends TestCase
         $user->unlockAchievement('5 Lessons Watched');
         $user->refresh();
         // Get the next available achievement
-        $nextAchievement = $user->getNextAchievement();
+        $nextAchievements = $user->getNextAchievements();
 
-        $this->assertEquals('10 Lessons Watched', $nextAchievement->name);
+        $lockAchievements = [
+            '10 Lessons Watched',
+            '25 Lessons Watched',
+            '50 Lessons Watched',
+            'First Comment Written',
+            '3 Comments Written',
+            '5 Comments Written',
+            '10 Comments Written',
+            '20 Comments Written',
+        ];
+
+        $this->assertEquals($lockAchievements, $nextAchievements);
     }
 
     public function testUpdateBadges()
@@ -78,9 +89,9 @@ class UserTest extends TestCase
         });
         $user->refresh();
         // Get the next available achievement when all are unlocked
-        $nextAchievement = $user->getNextAchievement();
+        $nextAchievement = $user->getNextAchievements();
 
-        $this->assertNull($nextAchievement);
+        $this->assertEmpty($nextAchievement);
     }
 
     public function testUpdateBadgesWithoutAchievements()

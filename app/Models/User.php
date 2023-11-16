@@ -101,17 +101,17 @@ class User extends Authenticatable
         return $this->achievements->contains('name', $achievementName);
     }
 
-    public function getNextAchievement(): ?Achievement
+    public function getNextAchievements(): array
     {
         // Get unlocked achievements for the user
         $unlockedAchievements = $this->achievements->pluck('name')->toArray();
 
         // Find the first achievement that the user hasn't unlocked
-        $nextAchievement = Achievement::all()->first(function ($achievement) use ($unlockedAchievements) {
+        $nextAchievements = Achievement::all()->filter(function ($achievement) use ($unlockedAchievements) {
             return ! in_array($achievement->name, $unlockedAchievements);
         });
 
-        return $nextAchievement;
+        return $nextAchievements?->pluck('name')->toArray();
     }
 
     public function updateBadges(): ?array
