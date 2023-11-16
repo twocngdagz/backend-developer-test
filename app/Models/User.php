@@ -80,7 +80,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Badge::class)->withTimestamps();
     }
 
-    public function unlockAchievement($achievementName): bool
+    public function unlockAchievement(string $achievementName): bool
     {
         // Check if the user has already unlocked this achievement
         if (! $this->hasAchievement($achievementName)) {
@@ -96,12 +96,12 @@ class User extends Authenticatable
         return false; // Indicate that the achievement was not unlocked (already unlocked)
     }
 
-    public function hasAchievement($achievementName): bool
+    public function hasAchievement(string $achievementName): bool
     {
         return $this->achievements->contains('name', $achievementName);
     }
 
-    public function getNextAchievement()
+    public function getNextAchievement(): Achievement
     {
         // Get unlocked achievements for the user
         $unlockedAchievements = $this->achievements->pluck('name')->toArray();
