@@ -114,6 +114,32 @@ class User extends Authenticatable
         return $nextAchievements?->pluck('name')->toArray();
     }
 
+    public function nextAvailableAchievements(): array
+    {
+        // Define achievement groups based on the type (e.g., Lessons or Comments)
+        $achievementGroups = Achievement::all()->groupBy('type');
+
+        // Initialize an array to store the next available achievements
+        $nextAvailableAchievements = [];
+        ray($achievementGroups);
+
+        foreach ($achievementGroups as $group) {
+            // Get the achievements in the current group
+            $groupAchievements = $this->achievements->filter(function ($achievement) use ($group) {
+                return $achievement->type === $group->first()->type;
+            });
+
+            // Get the next available achievement in the current group
+            $nextAchievement = $group->where('order', '>', $groupAchievements->count())->first();
+
+            if ($nextAchievement) {
+                $nextAvailableAchievements[] = $nextAchievement->name;
+            }
+        }
+
+        return $nextAvailableAchievements;
+    }
+
     public function updateBadges(): ?array
     {
         $unlockedBadges = collect([]);

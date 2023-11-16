@@ -218,4 +218,22 @@ class UserTest extends TestCase
         // Assert that remainingToUnlockNextBadge returns 0 when all badges are unlocked
         $this->assertEquals(0, $remainingToUnlockNextBadge);
     }
+
+    public function testNextAvailableAchievements()
+    {
+        // Create a user
+        $user = User::factory()->create();
+
+        // Unlock some achievements for the user
+        $user->unlockAchievement('First Lesson Watched');
+        $user->unlockAchievement('First Comment Written');
+        $user->refresh();
+
+        // Call the nextAvailableAchievements method
+        $nextAvailableAchievements = $user->nextAvailableAchievements();
+        ray($nextAvailableAchievements);
+
+        // Assert the next available achievements
+        $this->assertEquals(['5 Lessons Watched', '3 Comments Written'], $nextAvailableAchievements);
+    }
 }
