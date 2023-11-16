@@ -137,6 +137,11 @@ class User extends Authenticatable
         return $this->badges->contains('name', $badgeName);
     }
 
+    public function getUnlockedAchievements(): array
+    {
+        return $this->achievements->pluck('name')->toArray();
+    }
+
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();

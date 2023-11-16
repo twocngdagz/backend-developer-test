@@ -50,4 +50,21 @@ class UserTest extends TestCase
         $this->assertContains('Intermediate', $unlockedBadges);
         $this->assertTrue($user->hasBadge('Intermediate'));
     }
+
+    public function testGetUnlockedAchievements()
+    {
+        $user = User::factory()->create();
+
+        // Unlock some achievements
+        $user->unlockAchievement('First Lesson Watched');
+        $user->unlockAchievement('5 Lessons Watched');
+        $user->unlockAchievement('First Comment Written');
+        $user->refresh();
+        // Get unlocked achievements
+        $unlockedAchievements = $user->getUnlockedAchievements();
+
+        $this->assertContains('First Lesson Watched', $unlockedAchievements);
+        $this->assertContains('5 Lessons Watched', $unlockedAchievements);
+        $this->assertContains('First Comment Written', $unlockedAchievements);
+    }
 }
