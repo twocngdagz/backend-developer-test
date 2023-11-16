@@ -165,7 +165,7 @@ class User extends Authenticatable
         return end($badgeThresholds);
     }
 
-    public function nextBadge(): string
+    public function nextBadge(): ?string
     {
         // Define badge thresholds based on the number of achievements
         $badgeThresholds = Badge::orderBy('level')->get();
@@ -179,6 +179,8 @@ class User extends Authenticatable
                 return $badge->name;
             }
         }
+
+        return null;
     }
 
     public function remainingToUnlockNextBadge(): int
