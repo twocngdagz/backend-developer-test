@@ -116,4 +116,26 @@ class UserTest extends TestCase
 
         $this->assertCount(1, $user->achievements);
     }
+
+    public function testGetCurrentBadge()
+    {
+        // Create a user
+        $user = User::factory()->create();
+
+        // Unlock some achievements for the user
+        $user->unlockAchievement('First Lesson Watched');
+        $user->unlockAchievement('5 Lessons Watched');
+        $user->unlockAchievement('10 Lessons Watched');
+        $user->unlockAchievement('First Comment Written');
+        $user->refresh();
+
+        // Update badges
+        $user->updateBadges();
+
+        // Call the currentBadge method
+        $currentBadge = $user->currentBadge();
+
+        // Assert the user's current badge
+        $this->assertEquals('Intermediate', $currentBadge);
+    }
 }

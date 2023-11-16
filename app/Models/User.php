@@ -146,4 +146,23 @@ class User extends Authenticatable
     {
         return UserFactory::new();
     }
+
+    public function currentBadge()
+    {
+        // Define badge thresholds based on the number of achievements
+        $badgeThresholds = Badge::orderBy('level', 'desc')->get()->pluck('level', 'name')->toArray();
+
+        // Count the number of unlocked achievements for the user
+        $unlockedAchievements = $this->achievements->count();
+        ray($badgeThresholds);
+        // Determine the user's current badge based on thresholds
+        foreach ($badgeThresholds as $badge => $threshold) {
+            if ($unlockedAchievements >= $threshold) {
+                return $badge;
+            }
+        }
+
+        // If none of the thresholds match, return the last badge
+        return end($badgeThresholds);
+    }
 }
