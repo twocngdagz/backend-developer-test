@@ -158,6 +158,6 @@ class UserTest extends TestCase
         $nextBadge = $user->nextBadge();
 
         // Assert the user's next badge
-        $this->assertEquals('Advanced', $nextBadge); // Adjust based on your actual badge logic
+        $this->assertEquals('Advanced', $nextBadge);
     }
 }
