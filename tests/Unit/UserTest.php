@@ -231,7 +231,6 @@ class UserTest extends TestCase
 
         // Call the nextAvailableAchievements method
         $nextAvailableAchievements = $user->nextAvailableAchievements();
-        ray($nextAvailableAchievements);
 
         // Assert the next available achievements
         $this->assertEquals(['5 Lessons Watched', '3 Comments Written'], $nextAvailableAchievements);
