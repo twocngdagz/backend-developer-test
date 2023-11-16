@@ -82,4 +82,14 @@ class UserTest extends TestCase
 
         $this->assertNull($nextAchievement);
     }
+
+    public function testUpdateBadgesWithoutAchievements()
+    {
+        $user = User::factory()->create();
+
+        // Update badges without unlocking any achievements
+        $unlockedBadges = $user->updateBadges();
+
+        $this->assertContains('Beginner', $unlockedBadges);
+    }
 }
