@@ -101,7 +101,7 @@ class User extends Authenticatable
         return $this->achievements->contains('name', $achievementName);
     }
 
-    public function getNextAchievement(): Achievement
+    public function getNextAchievement(): ?Achievement
     {
         // Get unlocked achievements for the user
         $unlockedAchievements = $this->achievements->pluck('name')->toArray();

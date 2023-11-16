@@ -67,4 +67,19 @@ class UserTest extends TestCase
         $this->assertContains('5 Lessons Watched', $unlockedAchievements);
         $this->assertContains('First Comment Written', $unlockedAchievements);
     }
+
+    public function testGetNextAchievementAllUnlocked()
+    {
+        $user = User::factory()->create();
+
+        // Unlock all achievements
+        Achievement::all()->each(function ($achievement) use ($user) {
+            $user->unlockAchievement($achievement->name);
+        });
+        $user->refresh();
+        // Get the next available achievement when all are unlocked
+        $nextAchievement = $user->getNextAchievement();
+
+        $this->assertNull($nextAchievement);
+    }
 }
