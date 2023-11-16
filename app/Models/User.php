@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Events\AchievementUnlocked;
+use App\Events\BadgeUnlocked;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -90,6 +92,8 @@ class User extends Authenticatable
 
             $this->achievements()->attach($achievement->id);
 
+            event(new AchievementUnlocked($achievementName, $this));
+
             return true; // Indicate that the achievement was unlocked
         }
 
@@ -153,6 +157,15 @@ class User extends Authenticatable
                 $unlockedBadges->push($badgeName);
             }
         }
+
+        $userBadgesCount = $this->badges()->count();
+
+        match ($userBadgesCount) {
+            4 => event(new BadgeUnlocked('Intermediate', $this)),
+            8 => event(new BadgeUnlocked('Advanced', $this)),
+            10 => event(new BadgeUnlocked('Master', $this)),
+            default => null,
+        };
 
         return $unlockedBadges->isEmpty() ? null : $unlockedBadges->toArray();
     }
