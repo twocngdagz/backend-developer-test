@@ -154,7 +154,6 @@ class User extends Authenticatable
 
         // Count the number of unlocked achievements for the user
         $unlockedAchievements = $this->achievements->count();
-        ray($badgeThresholds);
         // Determine the user's current badge based on thresholds
         foreach ($badgeThresholds as $badge => $threshold) {
             if ($unlockedAchievements >= $threshold) {
