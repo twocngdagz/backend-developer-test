@@ -147,7 +147,7 @@ class User extends Authenticatable
         return UserFactory::new();
     }
 
-    public function currentBadge()
+    public function currentBadge(): string
     {
         // Define badge thresholds based on the number of achievements
         $badgeThresholds = Badge::orderBy('level', 'desc')->get()->pluck('level', 'name')->toArray();
