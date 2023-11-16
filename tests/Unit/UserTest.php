@@ -138,4 +138,26 @@ class UserTest extends TestCase
         // Assert the user's current badge
         $this->assertEquals('Intermediate', $currentBadge);
     }
+
+    public function testGetNextBadge()
+    {
+        // Create a user
+        $user = User::factory()->create();
+
+        // Unlock some achievements for the user
+        $user->unlockAchievement('First Lesson Watched');
+        $user->unlockAchievement('5 Lessons Watched');
+        $user->unlockAchievement('10 Lessons Watched');
+        $user->unlockAchievement('First Comment Written');
+        $user->refresh();
+
+        // Update badges
+        $user->updateBadges();
+
+        // Call the nextBadge method
+        $nextBadge = $user->nextBadge();
+
+        // Assert the user's next badge
+        $this->assertEquals('Advanced', $nextBadge); // Adjust based on your actual badge logic
+    }
 }

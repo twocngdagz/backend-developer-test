@@ -164,4 +164,20 @@ class User extends Authenticatable
         // If none of the thresholds match, return the last badge
         return end($badgeThresholds);
     }
+
+    public function nextBadge(): string
+    {
+        // Define badge thresholds based on the number of achievements
+        $badgeThresholds = Badge::orderBy('level')->get();
+
+        // Count the number of unlocked achievements for the user
+        $unlockedAchievements = $this->achievements->count();
+
+        // Find the next badge based on the user's achievements
+        foreach ($badgeThresholds as $badge) {
+            if ($unlockedAchievements < $badge->level) {
+                return $badge->name;
+            }
+        }
+    }
 }
