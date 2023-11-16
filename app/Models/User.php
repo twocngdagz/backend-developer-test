@@ -180,4 +180,23 @@ class User extends Authenticatable
             }
         }
     }
+
+    public function remainingToUnlockNextBadge(): int
+    {
+        // Define badge thresholds based on the number of achievements
+        $badgeThresholds = Badge::orderBy('level')->get();
+
+        // Count the number of unlocked achievements for the user
+        $unlockedAchievements = $this->achievements->count();
+
+        // Find the next badge based on the user's achievements
+        foreach ($badgeThresholds as $badge) {
+            if ($unlockedAchievements < $badge->level) {
+                return $badge->level - $unlockedAchievements;
+            }
+        }
+
+        // If all badges are unlocked, return 0 or appropriate value
+        return 0; // Or any appropriate value indicating all badges are unlocked
+    }
 }

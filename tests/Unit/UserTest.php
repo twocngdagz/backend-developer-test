@@ -160,4 +160,26 @@ class UserTest extends TestCase
         // Assert the user's next badge
         $this->assertEquals('Advanced', $nextBadge);
     }
+
+    public function testRemainingToUnlockNextBadge()
+    {
+        // Create a user
+        $user = User::factory()->create();
+
+        // Unlock some achievements for the user
+        $user->unlockAchievement('First Lesson Watched');
+        $user->unlockAchievement('5 Lessons Watched');
+        $user->unlockAchievement('10 Lessons Watched');
+        $user->unlockAchievement('First Comment Written');
+        $user->refresh();
+
+        // Update badges
+        $user->updateBadges();
+
+        // Call the remainingToUnlockNextBadge method
+        $remainingToUnlockNextBadge = $user->remainingToUnlockNextBadge();
+
+        // Assert the remaining achievements to unlock the next badge
+        $this->assertEquals(4, $remainingToUnlockNextBadge);
+    }
 }
