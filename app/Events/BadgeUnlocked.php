@@ -17,7 +17,8 @@ class BadgeUnlocked
      */
     public function __construct(
         public string $name, public User $user
-    ) {}
+    ) {
+    }
 
     /**
      * Get the channels the event should broadcast on.
