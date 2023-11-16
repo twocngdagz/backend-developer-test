@@ -92,4 +92,17 @@ class UserTest extends TestCase
 
         $this->assertContains('Beginner', $unlockedBadges);
     }
+
+    public function testUnlockSameAchievementTwice()
+    {
+        $user = User::factory()->create();
+
+        // Unlock the achievement for the user
+        $user->unlockAchievement('First Lesson Watched');
+        $user->refresh();
+        // Try to unlock the same achievement again
+        $user->unlockAchievement('First Lesson Watched');
+
+        $this->assertCount(1, $user->achievements);
+    }
 }
