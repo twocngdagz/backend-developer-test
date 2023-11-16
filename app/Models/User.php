@@ -121,7 +121,6 @@ class User extends Authenticatable
 
         // Initialize an array to store the next available achievements
         $nextAvailableAchievements = [];
-        ray($achievementGroups);
 
         foreach ($achievementGroups as $group) {
             // Get the achievements in the current group
