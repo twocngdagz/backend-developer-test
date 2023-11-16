@@ -114,6 +114,29 @@ class User extends Authenticatable
         return $nextAchievement;
     }
 
+    public function updateBadges(): ?array
+    {
+        $unlockedBadges = collect([]);
+
+        // Check if the user has unlocked any new badges
+        $badgeLevels = Badge::all()->pluck('name', 'level')->toArray();
+
+        foreach ($badgeLevels as $requiredAchievements => $badgeName) {
+            if ($this->achievements->count() >= $requiredAchievements && ! $this->hasBadge($badgeName)) {
+                $badge = Badge::where('name', $badgeName)->first();
+                $this->badges()->attach($badge->id);
+                $unlockedBadges->push($badgeName);
+            }
+        }
+
+        return $unlockedBadges->isEmpty() ? null : $unlockedBadges->toArray();
+    }
+
+    public function hasBadge(string $badgeName): bool
+    {
+        return $this->badges->contains('name', $badgeName);
+    }
+
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();

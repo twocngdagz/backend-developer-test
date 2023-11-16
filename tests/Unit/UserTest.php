@@ -14,26 +14,40 @@ class UserTest extends TestCase
     public function testUnlockAchievement()
     {
         $user = User::factory()->create();
-        Achievement::factory()->create(['name' => 'Test Achievement']);
         //Unlock the achievement for the user
-        $user->unlockAchievement('Test Achievement');
-        $this->assertTrue($user->refresh()->hasAchievement('Test Achievement'));
+        $user->unlockAchievement('First Lesson Watched');
+        $this->assertTrue($user->refresh()->hasAchievement('First Lesson Watched'));
     }
 
     public function testGetNextAchievement()
     {
         $user = User::factory()->create();
-        $firstAchievement = Achievement::factory()->create(['name' => 'First Lesson Watched']);
-        $secondAchievement = Achievement::factory()->create(['name' => '5 Lessons Watched']);
-        $thirdAchievement = Achievement::factory()->create(['name' => '10 Lessons Watched']);
 
         // Unlock some achievements
-        $user->unlockAchievement($firstAchievement->name);
-        $user->unlockAchievement($secondAchievement->name);
+        $user->unlockAchievement('First Lesson Watched');
+        $user->unlockAchievement('5 Lessons Watched');
         $user->refresh();
         // Get the next available achievement
         $nextAchievement = $user->getNextAchievement();
 
-        $this->assertEquals($thirdAchievement->name, $nextAchievement->name);
+        $this->assertEquals('10 Lessons Watched', $nextAchievement->name);
+    }
+
+    public function testUpdateBadges()
+    {
+        $user = User::factory()->create();
+
+        // Unlock some achievements
+        $user->unlockAchievement('First Lesson Watched');
+        $user->unlockAchievement('5 Lessons Watched');
+        $user->unlockAchievement('First Comment Written');
+        $user->unlockAchievement('3 Comments Written');
+        $user->refresh();
+        // Update badges
+        $unlockedBadges = $user->updateBadges();
+        $user->refresh();
+
+        $this->assertContains('Intermediate', $unlockedBadges);
+        $this->assertTrue($user->hasBadge('Intermediate'));
     }
 }

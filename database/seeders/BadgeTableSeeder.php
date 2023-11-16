@@ -22,16 +22,20 @@ class BadgeTableSeeder extends Seeder
         $badges =
             [
                 [
-                    'name' => 'Beginner'
+                    'name' => 'Beginner',
+                    'level' => 0,
                 ],
                 [
-                    'name' => 'Intermediate'
+                    'name' => 'Intermediate',
+                    'level' => 4,
                 ],
                 [
-                    'name' => 'Advanced'
+                    'name' => 'Advanced',
+                    'level' => 8,
                 ],
                 [
                     'name' => 'Master',
+                    'level' => 10,
                 ]
             ];
         collect($badges)->each(fn ($badge) => Badge::create($badge));
