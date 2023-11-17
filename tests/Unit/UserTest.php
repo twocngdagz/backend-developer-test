@@ -90,7 +90,7 @@ class UserTest extends TestCase
     public function testGetNextAchievementAllUnlocked()
     {
         // Unlock all achievements
-        Achievement::all()->each(function ($achievement)  {
+        Achievement::all()->each(function ($achievement) {
             $this->user->unlockAchievement($achievement->name);
         });
         $this->user->refresh();
