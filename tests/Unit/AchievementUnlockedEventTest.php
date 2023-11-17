@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Events\AchievementUnlocked;
-use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
