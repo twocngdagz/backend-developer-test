@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\AchievementUnlocked;
 use App\Events\CommentWritten;
 
 class CommentWrittenListener
@@ -22,14 +23,27 @@ class CommentWrittenListener
         $user = $event->comment->user;
         $commentsWrittenCount = $user->comments()->count();
 
-        match ($commentsWrittenCount) {
-            1 => $user->unlockAchievement('First Comment Written'),
-            3 => $user->unlockAchievement('3 Comments Written'),
-            5 => $user->unlockAchievement('5 Comments Written'),
-            10 => $user->unlockAchievement('10 Comments Written'),
-            20 => $user->unlockAchievement('20 Comments Written'),
-            default => null,
-        };
+        if ($commentsWrittenCount == 1) {
+            $user->unlockAchievement('First Comment Written');
+            // User watched the first lesson, unlock the "First Comment Written" achievement
+            event(new AchievementUnlocked('First Comment Written', $user));
+        } elseif ($commentsWrittenCount == 3) {
+            $user->unlockAchievement('3 Comments Written');
+            // User watched five lessons, unlock the "'3 Comments Written" achievement
+            event(new AchievementUnlocked('3 Comments Written', $user));
+        } elseif ($commentsWrittenCount == 5) {
+            $user->unlockAchievement('5 Comments Written');
+            // User watched five lessons, unlock the "5 Comments Written" achievement
+            event(new AchievementUnlocked('5 Comments Written', $user));
+        } elseif ($commentsWrittenCount == 10) {
+            $user->unlockAchievement('10 Comments Written');
+            // User watched five lessons, unlock the "10 Comments Written" achievement
+            event(new AchievementUnlocked('10 Comments Written', $user));
+        } elseif ($commentsWrittenCount == 10) {
+            $user->unlockAchievement('20 Comments Written');
+            // User watched five lessons, unlock the "20 Comments Written" achievement
+            event(new AchievementUnlocked('20 Comments Written', $user));
+        }
 
         $user->updateBadges();
     }

@@ -23,7 +23,7 @@ class CommentWrittenListenerTest extends TestCase
 
         $user->refresh();
 
-        $this->assertTrue(true, $user->hasAchievement('First Comment Written'));
-        $this->assertTrue(true, $user->hasBadge('Intermediate'));
+        $this->assertTrue($user->hasAchievement('First Comment Written'));
+        $this->assertTrue($user->hasBadge('Beginner'));
     }
 }
