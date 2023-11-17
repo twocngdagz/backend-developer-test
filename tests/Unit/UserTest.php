@@ -116,6 +116,7 @@ class UserTest extends TestCase
         $this->user->refresh();
         // Try to unlock the same achievement again
         $this->user->unlockAchievement('First Lesson Watched');
+        $this->user->refresh();
 
         $this->assertCount(1, $this->user->achievements);
     }
