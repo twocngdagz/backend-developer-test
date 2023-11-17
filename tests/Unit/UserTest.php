@@ -105,7 +105,8 @@ class UserTest extends TestCase
         // Update badges without unlocking any achievements
         $unlockedBadges = $this->user->updateBadges();
 
-        $this->assertContains('Beginner', $unlockedBadges);
+        //return null no need to unlock Beginner badge since by default new user has Beginner badge
+        $this->assertEquals(null, $unlockedBadges);
     }
 
     public function testUnlockSameAchievementTwice()
