@@ -24,9 +24,6 @@ class LessonWatchedListener
         $user = $event->user;
         $lesson = $event->lesson;
 
-        //Record user lesson
-        $user->lessons()->attach($lesson->id);
-
         // Logic to determine whether the user has unlocked a new achievement
         $lessonsWatchedCount = $user->lessons()->count();
 

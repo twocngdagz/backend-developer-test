@@ -22,6 +22,7 @@ class LessonWatchedListenerTest extends TestCase
             )
             ->create();
         $lesson = Lesson::factory()->create();
+        $user->lessons()->attach($lesson->id);
 
         $user->refresh();
         $listener = new LessonWatchedListener();
