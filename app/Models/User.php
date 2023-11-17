@@ -154,18 +154,10 @@ class User extends Authenticatable
             if ($this->achievements->count() >= $requiredAchievements && ! $this->hasBadge($badgeName)) {
                 $badge = Badge::where('name', $badgeName)->first();
                 $this->badges()->attach($badge->id);
+                event(new BadgeUnlocked($badgeName, $this));
                 $unlockedBadges->push($badgeName);
             }
         }
-
-        $userBadgesCount = $this->badges()->count();
-
-        match ($userBadgesCount) {
-            4 => event(new BadgeUnlocked('Intermediate', $this)),
-            8 => event(new BadgeUnlocked('Advanced', $this)),
-            10 => event(new BadgeUnlocked('Master', $this)),
-            default => null,
-        };
 
         return $unlockedBadges->isEmpty() ? null : $unlockedBadges->toArray();
     }
