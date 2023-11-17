@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Events\LessonWatched;
 use App\Listeners\LessonWatchedListener;
+use App\Models\Badge;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,16 +16,19 @@ class LessonWatchedListenerTest extends TestCase
 
     public function testLessonWatchListener()
     {
-        $user = User::factory()->create();
+        $user = User::factory()
+            ->hasAttached(
+                Badge::find(1)
+            )
+            ->create();
         $lesson = Lesson::factory()->create();
-        $user->lessons()->attach($lesson->id);
-
-        $listener = new LessonWatchedListener();
-        $listener->handle(new LessonWatched($lesson, $user));
 
         $user->refresh();
+        $listener = new LessonWatchedListener();
+        $listener->handle(new LessonWatched($lesson, $user));
+        $user->refresh();
 
-        $this->assertTrue(true, $user->hasAchievement('First Lesson Watched'));
-        $this->assertTrue(true, $user->hasBadge('Intermediate'));
+        $this->assertTrue($user->hasAchievement('First Lesson Watched'));
+        $this->assertTrue($user->hasBadge('Beginner'));
     }
 }
