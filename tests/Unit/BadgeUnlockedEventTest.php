@@ -29,7 +29,7 @@ class BadgeUnlockedEventTest extends TestCase
             return $event->name === 'Beginner' && $event->user->id === $user->id;
         });
         Event::assertDispatched(BadgeUnlocked::class, function ($event) use ($user) {
-            return $event->name === 'Intermediate' && $event->user->id === $user->id;
+            return $event->name === 'Intermediates' && $event->user->id === $user->id;
         });
     }
 }

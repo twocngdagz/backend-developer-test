@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\AchievementUnlocked;
-use App\Events\BadgeUnlocked;
 use App\Events\LessonWatched;
 
 class LessonWatchedListener
