@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,7 +14,11 @@ class UserAchievementsTest extends TestCase
     public function testGetUserAchievements()
     {
         // Create a user
-        $user = User::factory()->create();
+        $user = User::factory()
+            ->hasAttached(
+                Badge::find(1)
+            )
+            ->create();
 
         $achievements = [
             'First Lesson Watched',
